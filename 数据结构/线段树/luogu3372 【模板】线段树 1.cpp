@@ -15,8 +15,8 @@ struct Node {
 	}
 }tr[N << 2];  // 一定要开4倍以上空间 
 
-int son(int u, int p) {  // p最好不要开bool，会有奇怪的错误 
-	return (u << 1) + p;  // 记得加括号 
+int son(int u, int p) {
+	return u << 1 | p;
 }
 
 void pushup(int u) {
@@ -51,11 +51,11 @@ void update(int u, int l, int r, LL val) {
 		tr[u].lazy += val;
 		return;
 	}
-	if (tr[u].lazy) pushdown(u);
-	int mid = (tr[u].l + tr[u].r) >> 1;
+	if (tr[u].lazy) pushdown(u);  // 如果lazy=0就不用做了 
+	int mid = (tr[u].l + tr[u].r) >> 1;  // 是tr[u].l和tr[u].r而不是l和r 
 	if (l <= mid) update(son(u, 0), l, min(r, mid), val);
 	if (r > mid) update(son(u, 1), max(l, mid + 1), r, val);
-	pushup(u);
+	pushup(u);  // 别忘了 
 }
 
 LL query(int u, int l, int r) {
