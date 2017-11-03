@@ -15,11 +15,11 @@ LL fastPow(LL a, LL k) {
 	return ret;
 }
 /*
-设 ny(x) 表示x的乘法逆元 
-设 f[i] = i! % p, g[i] = ny(i!) % p
+设 inv(x) 表示x的乘法逆元 
+设 f[i] = i! % p, g[i] = inv(i!) % p
 可以把 g[i] 理解成 1/(i!) 
 则 g[i] = g[i+1] * (i+1)
-所以 ny(i) = f[i-1] * g[i]
+所以 inv(i) = f[i-1] * g[i]
 */
 int main() {
 	scanf("%lld%lld", &n, &p);
