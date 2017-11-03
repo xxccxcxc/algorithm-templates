@@ -25,7 +25,7 @@ bool dfs(int u) {
 	return false;
 }
 
-int Hungary() {
+int Hungary() {  // O(nE) 
 	int ret = 0;
 	for (int i = 1; i <= n; i++) {
 		memset(vis, 0, sizeof(vis));  // vis每次都要清零 
