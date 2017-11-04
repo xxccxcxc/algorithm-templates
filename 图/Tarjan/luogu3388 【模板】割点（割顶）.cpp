@@ -19,13 +19,17 @@ void tarjan(int u, int fa) {  // Tarjan割点
 			low[u] = min(low[u], low[v]);
 			/*
 			割点有两种情况，一种是自己是根，且子树个数大于1，则切掉这个点后子树间不连通
-			另一种是存在一个子结点v，low[v]>=dfn[u]，说明v子树不能越过u访问u的祖先，则切掉u后图不连通 
+			另一种是存在一个子结点v，low[v]>=dfn[u]，说明v子树不能不经过(u,v)访问u的祖先，则切掉u后图不连通
 			*/
 			iscut[u] |= !fa && son > 1 || fa && low[v] >= dfn[u];
 		}
 		else if (v != fa) low[u] = min(low[u], dfn[v]);  // u有返祖边，更新low[u]（父边不算返祖边） 
 	}
 }
+/*
+扩展：求割点时可以得到点双连通分量，即每两个点之间都至少有两条点不重复路径
+而点双连通分量等价于每两条边都在一个简单环里 
+*/ 
 
 int main() {
 	int n, m;
