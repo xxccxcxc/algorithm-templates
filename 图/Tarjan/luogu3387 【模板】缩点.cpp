@@ -9,12 +9,10 @@ using namespace std;
 const int N = 10050, INF = 0x3f3f3f3f;
 vector<int> e[N], e2[N];
 int a[N], dfscnt, dfn[N], low[N], bcnt, belong[N], val[N], f[N];
-bool vis[N];
 stack<int> st;
 
 void tarjan(int u) {  // 缩点（强连通分量） 
 	low[u] = dfn[u] = ++dfscnt;
-	vis[u] = true;
 	st.push(u);
 	for (int siz = e[u].size(), i = 0; i < siz; i++) {
 		int v = e[u][i];
@@ -22,14 +20,12 @@ void tarjan(int u) {  // 缩点（强连通分量）
 			tarjan(v);
 			low[u] = min(low[u], low[v]);
 		}
-		else if (vis[v]) low[u] = min(low[u], dfn[v]);  // 指向已经出栈的点的边对答案无影响 
+		else if (!belong[v]) low[u] = min(low[u], dfn[v]);  // 指向已经出栈的点的边对答案无影响 
 	}
 	if (low[u] == dfn[u]) {  // 讲不清楚，背下来就好 
 		++bcnt;
-		vis[u] = false;  // 点出栈时vis置0 
 		while (!st.empty()) {
 			int tmp = st.top(); st.pop();
-			vis[tmp] = false;
 			belong[tmp] = bcnt;
 			val[bcnt] += a[tmp];
 			if (tmp == u) break;
