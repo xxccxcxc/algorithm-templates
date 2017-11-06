@@ -146,6 +146,8 @@ void testString() {
 	cout << a.find("ghi") << endl;  // 1
 	int pos = a.find('j');
 	if (pos < 0 || pos >= a.size()) cout << "not find" << endl;  // not find
+	string d = "abcba";
+	cout << d.find("b", 1) << ' ' << d.find("b", 2) << endl;  // 1 3
 	const char *b = a.c_str();
 	cout << b << endl;  // aghifbc
 	char c[10] = "123";
@@ -238,7 +240,7 @@ int main() {
 	//testDeque();
 	//testMap();
 	//testSet();
-	//testString();
+	testString();
 	//testPair();
 	//testChar();
 	//testOther();
