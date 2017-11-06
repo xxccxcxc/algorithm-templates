@@ -159,6 +159,29 @@ void testPair() {  // 头文件utility
 	cout << a.first << ' ' << a.second << endl;
 }
 
+void testChar() {
+	char a[10] = "abc", b[10] = "123";
+	strcat(a, b);
+	cout << a << endl;  // abc123
+	strncat(a, a, 1);
+	cout << a << endl;  // abc123a
+	char c[10];
+	strcpy(c, b);
+	cout << c << endl;  // 123
+	strncpy(c, a, 4);  // 把a前4个字符复制到c，若strlen(a)>strlen(c)则不在a后加'\0' 
+	c[4] = '\0';
+	cout << c << endl;  // abc1
+	cout << strcmp("abc", "abd") << endl;  // 返回一个<0的数
+	// a<b则返回值<0，a=b则返回值=0，a>b则返回值>0
+	cout << strncmp("abcd", "abcef", 3) << endl;  // 0
+	cout << strlen("abc") << endl;  // 3
+	char d[10] = "aBc";
+	strlwr(d);
+	cout << d << endl;  // abc
+	strupr(d);
+	cout << d << endl;  // ABC
+}
+
 void testOther() {
 	string a = "123";
 	int b;
@@ -217,6 +240,7 @@ int main() {
 	//testSet();
 	//testString();
 	//testPair();
+	//testChar();
 	//testOther();
 	return 0;
 }
