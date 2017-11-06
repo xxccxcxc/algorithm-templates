@@ -17,7 +17,7 @@ bool dfs(int u) {
 		if (!vis[v]) {
 			vis[v] = true;
 			if (!pre[v] || dfs(pre[v])) {  // 是dfs(pre[v])而不是dfs(v) ，dfs的参数是左边的点 
-				pre[v] = u;
+				pre[v] = u;  // 把所有边反向 
 				return true;
 			}
 		}
@@ -44,4 +44,5 @@ int main() {
 	printf("%d\n", Hungary());
 	return 0;
 }
+// 扩展：最小点覆盖 = 最大匹配；最大独立集 = 总点数 - 最大匹配；最小边覆盖 = 总点数 - 最大匹配 
 
