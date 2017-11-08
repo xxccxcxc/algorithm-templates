@@ -231,6 +231,17 @@ void testOther() {
 	int t[5] = {2, 4, 3, 2, 5};
 	sort(t, t+5);
 	cout << lower_bound(t, t+5, 2) - t << ' ' << upper_bound(t, t+5, 2) - t << endl;  // 0 2
+	
+	int r[5] = {0, 1, 2, 3, 4};
+	fill(r, r+5, -1);  // Í·ÎÄ¼þ<algorithm> 
+	for (int i = 0; i < 5; i++)
+		cout << r[i] << ' ';  // -1 -1 -1 -1 -1
+	cout << endl;
+	
+	fill_n(r, 3, 5);
+	for (int i = 0; i < 5; i++)
+		cout << r[i] << ' ';  // 5 5 5 -1 -1
+	cout << endl;
 }
 
 int main() {
@@ -240,10 +251,10 @@ int main() {
 	//testDeque();
 	//testMap();
 	//testSet();
-	testString();
+	//testString();
 	//testPair();
 	//testChar();
-	//testOther();
+	testOther();
 	return 0;
 }
 
