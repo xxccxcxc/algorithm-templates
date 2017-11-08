@@ -20,11 +20,7 @@ struct Line {
 	void input() { a.input(); b.input(); }
 };
 
-int sgn(double t) {
-	if (t > EPS) return 1;
-	if (t < -EPS) return -1;
-	return 0;
-}
+int sgn(double t) { return t > EPS ? 1 : t < -EPS ? -1 : 0; }
 
 Point jiao(Line t1, Line t2) {  // 求直线交点 
 	// 先算出一般式 
