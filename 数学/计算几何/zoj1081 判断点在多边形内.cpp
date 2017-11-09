@@ -34,8 +34,10 @@ bool judge1(Point a, Point b, Point c) {  // 判断a是否在线段bc上
 }
 
 bool judge2(Point a, Point b, Point c, Point d) {  // 判断线段ab和cd是否相交 
-	// a和b在cd两边并且c和d在ab两边，用叉乘判断 
-	return sgn(xc(a, b, c)) * sgn(xc(a, b, d)) < 0 && sgn(xc(c, d, a)) * sgn(xc(c, d, b)) < 0;
+	// 先快速排斥，然后判断a和b在cd两边并且c和d在ab两边，用叉乘判断 
+	return max(a.x, b.x) >= min(c.x, d.x) && max(c.x, d.x) >= min(a.x, b.x) && 
+		   max(a.y, b.y) >= min(c.y, d.y) && max(c.y, d.y) >= min(a.y, b.y) && 
+	       sgn(xc(a, b, c)) * sgn(xc(a, b, d)) <= 0 && sgn(xc(c, d, a)) * sgn(xc(c, d, b)) <= 0;
 }
 
 bool judge(Point u) {
