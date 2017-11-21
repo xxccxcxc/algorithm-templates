@@ -15,7 +15,7 @@ struct Node {
 	}
 }tr[N << 2];  // 一定要开4倍以上空间 
 
-int son(int u, int p) {
+int son(int u, bool p) {
 	return u << 1 | p;
 }
 
