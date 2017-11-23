@@ -43,10 +43,10 @@ int query(int u, int v) {
 	int td = dep[v] - dep[u];
 	for (int i = 0, bin = 1; i <= D; i++, bin <<= 1)
 		if (td & bin) v = anc[v][i];
+	if (u == v) return u;
 	for (int i = D; i >= 0; i--)
 		if (anc[u][i] != anc[v][i])
 			u = anc[u][i], v = anc[v][i];
-	if (u == v) return u;
 	return anc[u][0];
 }
 

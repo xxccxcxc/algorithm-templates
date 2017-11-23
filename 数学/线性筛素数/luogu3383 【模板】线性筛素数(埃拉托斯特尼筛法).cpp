@@ -8,7 +8,7 @@ using namespace std;
 const int N = 1e7+5;
 bool p[N];
 
-int main() {
+int main() {  // 埃拉托斯特尼筛法，O(nloglogn) 
 	int n, m;
 	scanf("%d%d", &n, &m);
 	p[0] = p[1] = true;

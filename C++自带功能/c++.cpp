@@ -148,11 +148,16 @@ void testString() {
 	if (pos < 0 || pos >= a.size()) cout << "not find" << endl;  // not find
 	string d = "abcba";
 	cout << d.find("b", 1) << ' ' << d.find("b", 2) << endl;  // 1 3
-	const char *b = a.c_str();
-	cout << b << endl;  // aghifbc
-	char c[10] = "123";
-	a = c;
+	char c[10];
+	strcpy(c, d.c_str());
+	c[1] = 'z';
+	cout << c << endl;  // azcba
+	char s[10] = "123";
+	a = s;
 	cout << a << endl;  // 123
+	string e;
+	getline(cin, e);  // input: 123 456
+	cout << e << endl;   // 123 456
 }
 
 void testPair() {  // Í·ÎÄ¼þutility 
@@ -254,7 +259,7 @@ int main() {
 	//testString();
 	//testPair();
 	//testChar();
-	testOther();
+	//testOther();
 	return 0;
 }
 
