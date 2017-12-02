@@ -9,7 +9,7 @@ const int N = 10050;
 struct MFS {
     int fa[N], siz[N];
     void init(int n) { for (int i = 1; i <= n; i++) fa[i] = i; }
-    int find(int x) { return fa[x] == x ? x : (fa[x] = find(fa[x])); }
+    int find(int x) { return fa[x] == x ? x : fa[x] = find(fa[x]); }
     void unionn(int x, int y) {
         int fx = find(x), fy = find(y);
         if (fx == fy) return;
