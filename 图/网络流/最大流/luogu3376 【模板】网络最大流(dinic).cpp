@@ -40,13 +40,13 @@ struct Network {  // dinic算法模板
 		return dis[t];  // 若dis[t]==0则无法继续增广，返回false 
 	}
 	
-	int dfs(int u, int nowFlow) {  // nowFlow为当前可增广的最大流量 
-		if (u == t) return nowFlow;
+	int dfs(int u, int curFlow) {  // curFlow为当前可增广的最大流量 
+		if (u == t) return curFlow;
 		if (dis[u] >= dis[t]) return 0;  // 走过头就退掉 
 		for (int i = G.head[u]; ~i; i = G.e[i].nxt) {
 			int v = G.e[i].to, flow;
 			// 这条边残量不为0，且v在u的下一层，才能继续增广 
-			if (G.e[i].f && dis[v] == dis[u] + 1 && (flow = dfs(v, min(nowFlow, G.e[i].f)))) {
+			if (G.e[i].f && dis[v] == dis[u] + 1 && (flow = dfs(v, min(curFlow, G.e[i].f)))) {
 				G.e[i].f -= flow;
 				G.e[i^1].f += flow;
 				return flow;

@@ -47,10 +47,10 @@ struct Network {  // sap算法模板
 		for (int i = cur[u]; ~i; i = G.e[i].nxt) {
 			int v = G.e[i].to;
 			if (G.e[i].f && h[u] == h[v] + 1) {  // 高度差1时才能流 
-				int nowFlow = dfs(v, min(surplus - flow, G.e[i].f));
-				G.e[i].f -= nowFlow;
-				G.e[i^1].f += nowFlow;
-				flow += nowFlow;
+				int curFlow = dfs(v, min(surplus - flow, G.e[i].f));
+				G.e[i].f -= curFlow;
+				G.e[i^1].f += curFlow;
+				flow += curFlow;
 				if (flow == surplus) {
 					cur[u] = i;  // 更新当前弧 
 					return flow;
