@@ -92,7 +92,7 @@ struct PointDivide {
     void solve() { dfs(getRoot(1, 0, n), n); }
 } tree;
 
-// 题意：求树上距离<=K的点对数，多组询问
+// 题意：询问树上是否存在距离为K的点对，多组询问
 // 复杂度O(nmlog2n)，事实上常数很小 
 int main() {
     int n, m; scanf("%d%d", &n, &m); tree.n = n;
