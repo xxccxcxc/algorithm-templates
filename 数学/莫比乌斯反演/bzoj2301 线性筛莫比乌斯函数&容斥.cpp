@@ -25,8 +25,8 @@ void calcMiu() {  // miu是积性函数，可以线性筛
 
 int calc(int n, int m) {
 	if (n > m) swap(n, m);
-	int ret = 0, r;
-	for (int l = 1; l <= n; l = r + 1) {
+	int ret = 0;
+	for (int l = 1, r; l <= n; l = r + 1) {
 		r = min(n / (n/l), m / (m/l));  // 满足n/i=n/l的i最大为n/(n/l)
 		ret += (sum[r] - sum[l-1]) * (n/l) * (m/l);  // 求[l,r]内的Σmiu(i)*f(i) 
 	}
