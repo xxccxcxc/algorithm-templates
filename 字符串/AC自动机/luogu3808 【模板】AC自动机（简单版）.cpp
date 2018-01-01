@@ -36,7 +36,7 @@ struct AC {
 		}
 	}
 	
-	int query(char *s) {
+	int Query(char *s) {
 		int len = strlen(s), u = 0, ret = 0;
 		for (int i = 0; i < len; i++)
 			// 因为已经进行了路径压缩，所以不用fail数组，直接通过ch来转移 
@@ -55,7 +55,7 @@ int main() {
 		scanf("%s", r), ac.Insert(r);
 	ac.Build();
 	scanf("%s", r);
-	printf("%d\n", ac.query(r));
+	printf("%d\n", ac.Query(r));
     return 0;
 }
 
