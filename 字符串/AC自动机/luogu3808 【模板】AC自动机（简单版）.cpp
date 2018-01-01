@@ -53,7 +53,7 @@ int main() {
 	int n; scanf("%d", &n);
 	for (int i = 1; i <= n; i++)
 		scanf("%s", r), ac.Insert(r);
-	ac.Build();
+	ac.Build();  // ÎðÍü 
 	scanf("%s", r);
 	printf("%d\n", ac.Query(r));
     return 0;
