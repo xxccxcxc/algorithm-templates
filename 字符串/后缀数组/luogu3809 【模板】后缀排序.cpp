@@ -46,7 +46,7 @@ void GetSA() {  // 求sa,rk,height数组
     
     // height[i]>=height[i的前一名]-1，利用这个性质O(n)计算 
     for (int i = 1, k = 0, j; i <= n; height[rk[i++]] = k)
-        for (k = k ? k - 1 : k, j = sa[rk[i]-1]; s[i+k] == s[j+k]; k++);
+        for (k = k ? k - 1 : k, j = sa[rk[i]-1]; rk[i] != 1 && s[i+k] == s[j+k]; k++);
 }
 
 /*
@@ -61,4 +61,5 @@ int main() {
     putchar('\n');
     return 0;
 }
+
 
