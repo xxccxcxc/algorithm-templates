@@ -19,10 +19,9 @@ struct LinearBasis{
 	
 	bool Insert(LL x) {
 		for (int i = L; i >= 0 && x; i--)
-			if (x & bin[i]) {
+			if (x & bin[i])
 				if (!b[i]) { b[i] = x; return true; }  // 如果没有数覆盖第i位，就把x选进来 
 				else x ^= b[i];  // 把x的第i位消成0 
-			}
 		// 最后要么x被消成0，即x可以被线性基中的元素异或出来，要么x被丢进线性基 
 		return false;
 	}
