@@ -36,6 +36,7 @@ struct Network {  // dinic算法模板
 					q.push(v);
 				}
 			}
+			if (dis[t]) break;  // t层之后的点根本不会访问到，不用处理 
 		}
 		return dis[t];  // 若dis[t]==0则无法继续增广，返回false 
 	}
@@ -52,6 +53,7 @@ struct Network {  // dinic算法模板
 				return flow;
 			}
 		}
+		dis[u] = -1;  // u点无法继续增广，以后无需访问 
 		return 0;  // 无法增广返回0 
 	}
 	
