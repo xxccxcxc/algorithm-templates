@@ -3,6 +3,7 @@
 #include <cstdio>
 #include <cstring>
 #include <algorithm>
+#include <cmath>
 using namespace std;
 const int N = 10050;
 const double EPS = 1e-6;
@@ -11,6 +12,7 @@ struct Point {
 	Point(double _x=0, double _y=0): x(_x), y(_y) {}
 	Point operator-(const Point &t) const { return Point(x - t.x, y - t.y); }
 	double operator^(const Point &t) const { return x * t.y - y * t.x; }
+	double operator*(const Point &t) const { return x * t.x + y * t.y; }
 	bool operator<(const Point &t) const { return x < t.x || x == t.x && y < t.y; }
 	void input() { cin >> x >> y; }
 	void print() { cout << x << ' ' << y << endl; }
@@ -18,7 +20,11 @@ struct Point {
 
 int sgn(double t) { return t > EPS ? 1 : t < -EPS ? -1 : 0; }
 double xc(const Point &a, const Point &b, const Point &c) { return (b - a) ^ (c - a); }
-bool cmp(Point t1, Point t2) { return sgn(xc(point[0], t1, t2)) > 0; }  // 极角排序 
+double dis(const Point &a, const Point &b) { return sqrt((a-b)*(a-b)); }
+bool cmp(Point t1, Point t2) {
+	int t = sgn(xc(point[0], t1, t2));
+	return t > 0 || t == 0 && dis(point[0], t1) < dis(point[0], t2);
+} 
 
 int main() {  // 求凸包面积 
 	int n; cin >> n;
