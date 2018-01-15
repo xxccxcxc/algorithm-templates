@@ -9,59 +9,62 @@ const int N = 10050, M = 100050, INF = 0x3f3f3f3f;
 
 struct Graph {
 	struct Edge {
-		int to, f, nxt;
-		Edge(int _to=0, int _f=0, int _nxt=0): to(_to), f(_f), nxt(_nxt) {}
+		int to, w, nxt;
+		Edge() {}
+		Edge(int _to, int _w, int _nxt): to(_to), w(_w), nxt(_nxt) {}
 	} e[M<<1];
-	int head[N], ecnt;
+	int etop, head[N];
 	
-	Graph() { memset(head, -1, sizeof(head)); }
-	void add1(int u, int v, int f) { e[ecnt] = Edge(v, f, head[u]); head[u] = ecnt++; }
-	void add(int u, int v, int f) { add1(u, v, f); add1(v, u, 0); }
+	Graph() { etop = 0; memset(head, -1, sizeof(head)); }
+	void Add1(int u, int v, int f) { e[etop] = Edge(v, f, head[u]); head[u] = etop++; }
 };
 
-struct Network {  // dinic算法模板 
+struct Network {
 	Graph G;
 	int s, t;
 	int dis[N];
 	
-	bool bfs() {  // bfs分层 
+	void Add(int u, int v, int w) {
+		G.Add1(u, v, w);
+		G.Add1(v, u, 0);
+	}
+	
+	bool Bfs() {
 		memset(dis, 0, sizeof(dis)); dis[s] = 1;
 		queue<int> q; q.push(s);
-		while (!q.empty()) {
+		while (!q.empty() && !dis[t]) {
 			int u = q.front(); q.pop();
 			for (int i = G.head[u]; ~i; i = G.e[i].nxt) {
 				int v = G.e[i].to;
-				if (G.e[i].f && !dis[v]) {
+				if (G.e[i].w && !dis[v]) {
 					dis[v] = dis[u] + 1;
 					q.push(v);
 				}
 			}
-			if (dis[t]) break;  // t层之后的点根本不会访问到，不用处理 
 		}
-		return dis[t];  // 若dis[t]==0则无法继续增广，返回false 
+		return dis[t];
 	}
 	
-	int dfs(int u, int curFlow) {  // curFlow为当前可增广的最大流量 
+	int Dfs(int u, int curFlow) {
 		if (u == t) return curFlow;
-		if (dis[u] >= dis[t]) return 0;  // 走过头就退掉 
+		if (dis[u] >= dis[t]) return 0;
 		for (int i = G.head[u]; ~i; i = G.e[i].nxt) {
 			int v = G.e[i].to, flow;
-			// 这条边残量不为0，且v在u的下一层，才能继续增广 
-			if (G.e[i].f && dis[v] == dis[u] + 1 && (flow = dfs(v, min(curFlow, G.e[i].f)))) {
-				G.e[i].f -= flow;
-				G.e[i^1].f += flow;
+			if (G.e[i].w && dis[v] == dis[u] + 1 && (flow = Dfs(v, min(curFlow, G.e[i].w)))) {
+				G.e[i].w -= flow;
+				G.e[i^1].w += flow;
 				return flow;
 			}
 		}
-		dis[u] = -1;  // u点无法继续增广，以后无需访问 
-		return 0;  // 无法增广返回0 
+		dis[u] = -1;
+		return 0;
 	}
 	
-	int dinic(int _s, int _t) {
+	int Dinic(int _s, int _t) {
 		s = _s; t = _t;
 		int maxFlow = 0, flow;
-		while (bfs())  // 每次都要重新分层 
-			while (flow = dfs(s, INF))
+		while (Bfs())
+			while (flow = Dfs(s, INF))
 				maxFlow += flow;
 		return maxFlow;
 	}
@@ -70,9 +73,9 @@ struct Network {  // dinic算法模板
 int main() {
 	ios::sync_with_stdio(false);
 	int n, m, s, t; cin >> n >> m >> s >> t;
-	for (int u, v, w; m--; net.G.add(u, v, w))
+	for (int u, v, w; m--; net.Add(u, v, w))
 		cin >> u >> v >> w;
-	cout << net.dinic(s, t) << endl;
+	cout << net.Dinic(s, t) << endl;
 	return 0;
 }
 
