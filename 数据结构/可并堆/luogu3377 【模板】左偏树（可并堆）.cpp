@@ -1,53 +1,38 @@
-#include <algorithm>
 #include <iostream>
+#include <algorithm>
+#include <cstdio>
 #include <cstdlib>
 #include <cstring>
-#include <cstdio>
+#include <cmath>
 using namespace std;
-const int N = 100050;
-
-struct Item {
-	int val, id;
-	Item(): val(0), id(0) {}
-	Item(int _val, int _id): val(_val), id(_id) {}
-	bool operator<(const Item &t) {
-		return val < t.val || val == t.val && id < t.id;
-	}
-};
+const int N = 1e5+50;
 
 struct Node {
-	int l, r, dis;
-	Item data;
-	Node(): l(0), r(0), dis(0), data(Item()) {}  // 空结点dis设为0 
-	Node(int _val, int _id): l(0), r(0), dis(1), data(Item(_val, _id)) {}
-	// 手写构造函数，未赋值的变量不会自动赋0，所以一定要赋全 
-}tr[N];
+	int ls, rs, dis;
+	pair<int, int> data;
+} tr[N];
 
-int fa[N];
-bool die[N];
-
-int find(int x) {
-	if (fa[x] != x) fa[x] = find(fa[x]);
-	return fa[x];
-}
-
-int merge(int x, int y) {
+int Merge(int x, int y) {
 	if (!x) return y;
 	if (!y) return x;
-	if (tr[y].data < tr[x].data) swap(x, y);
-	tr[x].r = merge(tr[x].r, y);
-	if (tr[tr[x].l].dis < tr[tr[x].r].dis)
-		swap(tr[x].l, tr[x].r);
-	tr[x].dis = tr[tr[x].r].dis + 1;
+	if (tr[x].data > tr[y].data) swap(x, y);
+	tr[x].rs = Merge(tr[x].rs, y);
+	if (tr[tr[x].ls].dis < tr[tr[x].rs].dis)
+		swap(tr[x].ls, tr[x].rs);
+	tr[x].dis = tr[tr[x].rs].dis + 1;
 	return x;
 }
 
+int fa[N];
+int find(int x) { return fa[x] == x ? x : (fa[x] = find(fa[x])); }
+
+bool die[N];
+
 int main() {
-	int n, m;
-	scanf("%d%d", &n, &m);
-	for (int i = 1, val; i <= n; i++) {
-		scanf("%d", &val);
-		tr[i] = Node(val, i);
+	int n, m; scanf("%d%d", &n, &m);
+	for (int i = 1, num; i <= n; i++) {
+		scanf("%d", &num);
+		tr[i].data = make_pair(num, i);
 		fa[i] = i;
 	}
 	for (int opt, x, y; m--; ) {
@@ -57,21 +42,17 @@ int main() {
 			if (die[x] || die[y]) continue;
 			int fx = find(x), fy = find(y);
 			if (fx == fy) continue;
-			fa[fx] = fa[fy] = merge(fx, fy);
-		}
-		else {
+			fa[fx] = fa[fy] = Merge(fx, fy);
+		} else {
 			scanf("%d", &x);
-			if (die[x]) {
-				printf("-1\n");
-				continue;
-			}
+			if (die[x]) { printf("-1\n"); continue; }
 			int fx = find(x);
-			printf("%d\n", tr[fx].data.val);
+			printf("%d\n", tr[fx].data.first);
 			die[fx] = true;
-			fa[fx] = merge(tr[fx].l, tr[fx].r);  // 这里不把旧根的fa清零，而是指向新根 
+			fa[fx] = Merge(tr[fx].ls, tr[fx].rs);  // 这里不把旧根的fa清零，而是指向新根 
 			fa[fa[fx]] = fa[fx];  // fa[fx]作为新树根，它的fa必须指向自己 
 		}
 	}
-    return 0;
+	return 0;
 }
 
