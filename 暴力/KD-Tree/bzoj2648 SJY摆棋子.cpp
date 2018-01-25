@@ -9,9 +9,15 @@ const int N = 1e6+50, INF = 0x3f3f3f3f;
 
 struct Point {
 	int pos[2];
-	Point(int _x=0, int _y=0) { pos[0] = _x; pos[1] = _y; }
-	void Input() { scanf("%d%d", &pos[0], &pos[1]); }
+	Point(int _x=0, int _y=0) {
+		pos[0] = _x;
+		pos[1] = _y;
+	}
 };
+
+int Dis(Point a, Point b) {
+	return abs(a.pos[0] - b.pos[0]) + abs(a.pos[1] - b.pos[1]);
+}
 	
 struct Cmp {
 	bool id;
@@ -23,15 +29,14 @@ struct Cmp {
 
 struct KDTree {
 	struct Node {
-		struct D {
-			int pos, mi, mx;
-			D(int _pos=0) { pos = mi = mx = _pos; }
-		} d[2];
-		int ch[2];
-		Node(Point poi = Point(0, 0)) {
-			ch[0] = ch[1] = 0;
-			d[0] = D(poi.pos[0]);
-			d[1] = D(poi.pos[1]);
+		Point p;
+		int ch[2], mi[2], mx[2];
+		Node(Point _p = Point(0, 0)) {
+			p = _p;
+			for (int i = 0; i < 2; i++) {
+				ch[i] = 0;
+				mi[i] = mx[i] = p.pos[i];
+			}
 		}
 	} tr[N];
 	
@@ -39,67 +44,66 @@ struct KDTree {
 	
 	KDTree() {
 		for (int i = 0; i < 2; i++) {
-			tr[0].d[i].mi = INF;
-			tr[0].d[i].mx = -INF;
+			tr[0].mi[i] = INF;
+			tr[0].mx[i] = -INF;
 		}
 	}
 	
 	void Update(int u) {
 		int ls = tr[u].ch[0], rs = tr[u].ch[1];
 		for (int i = 0; i < 2; i++) {
-			tr[u].d[i].mi = min(tr[u].d[i].mi, min(tr[ls].d[i].mi, tr[rs].d[i].mi));
-			tr[u].d[i].mx = max(tr[u].d[i].mx, max(tr[ls].d[i].mx, tr[rs].d[i].mx));
+			tr[u].mi[i] = min(tr[u].mi[i], min(tr[ls].mi[i], tr[rs].mi[i]));
+			tr[u].mx[i] = max(tr[u].mx[i], max(tr[ls].mx[i], tr[rs].mx[i]));
 		}
 	}
 	
-	int Build(Point *poi, int L, int R, int curD) {
+	int Build(Point *p, int L, int R, int d) {
 		int mid = L + R >> 1;
-		nth_element(poi + L, poi + mid, poi + R + 1, Cmp(curD));
-		tr[mid] = Node(poi[mid]);
-		if (L < mid) tr[mid].ch[0] = Build(poi, L, mid - 1, curD ^ 1);
-		if (mid < R) tr[mid].ch[1] = Build(poi, mid + 1, R, curD ^ 1);
+		nth_element(p + L, p + mid, p + R + 1, Cmp(d));
+		tr[mid] = Node(p[mid]);
+		if (L < mid) tr[mid].ch[0] = Build(p, L, mid - 1, d ^ 1);
+		if (mid < R) tr[mid].ch[1] = Build(p, mid + 1, R, d ^ 1);
 		Update(mid);
 		return mid;
 	}
 	
-	void Build(int n, Point *poi) {
-		root = Build(poi, 1, n, 0);
+	void Build(int n, Point *p) {
+		root = Build(p, 1, n, 0);
 		top = n + 1;
 	}
 	
-	void Insert(int &u, int curD, Point poi) {
-		if (!u) { tr[u = top++] = Node(poi); return; }
-		bool lr = poi.pos[curD] >= tr[u].d[curD].pos;
-		Insert(tr[u].ch[lr], curD ^ 1, poi);
+	void Insert(int &u, int d, Point p) {
+		if (!u) { tr[u = top++] = Node(p); return; }
+		bool lr = p.pos[d] >= tr[u].p.pos[d];
+		Insert(tr[u].ch[lr], d ^ 1, p);
 		Update(u);
 	}
 	
-	void Insert(Point poi) {
-		Insert(root, 0, poi);
+	void Insert(Point p) {
+		Insert(root, 0, p);
 	}
 	
-	bool MightIn(int u, Point poi, int ans) {
+	bool MightIn(int u, Point p, int ans) {
 		if (!u) return 0;
 		int dis = 0;
 		for (int i = 0; i < 2; i++) {
-			dis += max(tr[u].d[i].mi - poi.pos[i], 0);
-			dis += max(poi.pos[i] - tr[u].d[i].mx, 0);
+			dis += max(tr[u].mi[i] - p.pos[i], 0);
+			dis += max(p.pos[i] - tr[u].mx[i], 0);
 		}
 		return dis < ans;
 	}
 	
-	int MinDis(int u, int curD, Point poi, int &ans) {
-		int dis = abs(tr[u].d[0].pos - poi.pos[0]) + abs(tr[u].d[1].pos - poi.pos[1]);
-		ans = min(ans, dis);
-		bool lr = poi.pos[curD] >= tr[u].d[curD].pos;
+	int MinDis(int u, int d, Point p, int &ans) {
+		ans = min(ans, Dis(tr[u].p, p));
+		bool lr = p.pos[d] >= tr[u].p.pos[d];
 		for (int cnt = 0; cnt < 2; lr ^= 1, cnt++)
-			if (MightIn(tr[u].ch[lr], poi, ans))
-				MinDis(tr[u].ch[lr], curD ^ 1, poi, ans);
+			if (MightIn(tr[u].ch[lr], p, ans))
+				MinDis(tr[u].ch[lr], d ^ 1, p, ans);
 	}
 	
-	int MinDis(Point poi) {
+	int MinDis(Point p) {
 		int ans = INF;
-		MinDis(root, 0, poi, ans);
+		MinDis(root, 0, p, ans);
 		return ans;
 	}
 } kdTree;
@@ -108,13 +112,16 @@ Point init[N];
 
 int main() {
 	int n, m; scanf("%d%d", &n, &m);
-	for (int i = 1; i <= n; i++) init[i].Input();
+	for (int x, y, i = 1; i <= n; i++) {
+		scanf("%d%d", &x, &y);
+		init[i] = Point(x, y);
+	}
 	kdTree.Build(n, init);
 	while (m--) {
-		int opt; scanf("%d", &opt);
-		Point poi; poi.Input();
-		if (opt == 1) kdTree.Insert(poi);
-		else printf("%d\n", kdTree.MinDis(poi));
+		int opt, x, y; scanf("%d%d%d", &opt, &x, &y);
+		Point p(x, y);
+		if (opt == 1) kdTree.Insert(p);
+		else printf("%d\n", kdTree.MinDis(p));
 	}
 	return 0;
 }
