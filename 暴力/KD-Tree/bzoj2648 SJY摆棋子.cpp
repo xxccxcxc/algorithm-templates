@@ -106,7 +106,7 @@ struct KDTree {
 		MinDis(root, 0, p, ans);
 		return ans;
 	}
-} kdTree;
+} kd;
 
 Point init[N];
 
@@ -116,12 +116,12 @@ int main() {
 		scanf("%d%d", &x, &y);
 		init[i] = Point(x, y);
 	}
-	kdTree.Build(n, init);
+	kd.Build(n, init);
 	while (m--) {
 		int opt, x, y; scanf("%d%d%d", &opt, &x, &y);
 		Point p(x, y);
-		if (opt == 1) kdTree.Insert(p);
-		else printf("%d\n", kdTree.MinDis(p));
+		if (opt == 1) kd.Insert(p);
+		else printf("%d\n", kd.MinDis(p));
 	}
 	return 0;
 }
