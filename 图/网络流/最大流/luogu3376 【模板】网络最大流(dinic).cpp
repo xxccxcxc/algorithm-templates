@@ -47,7 +47,6 @@ struct Network {
 	
 	int Dfs(int u, int curFlow) {
 		if (u == t) return curFlow;
-		if (dis[u] >= dis[t]) return 0;
 		for (int i = G.head[u]; ~i; i = G.e[i].nxt) {
 			int v = G.e[i].to, flow;
 			if (G.e[i].w && dis[v] == dis[u] + 1 && (flow = Dfs(v, min(curFlow, G.e[i].w)))) {
@@ -56,7 +55,7 @@ struct Network {
 				return flow;
 			}
 		}
-		dis[u] = -1;
+		dis[u] = 0;
 		return 0;
 	}
 	
