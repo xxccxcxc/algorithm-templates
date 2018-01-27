@@ -74,6 +74,9 @@ void testQueue() {
 	cout << a.front() << endl;  // 1
 	
 	cout << a.size() << ' ' << a.empty() << endl;  // 9 0
+	
+	priority_queue<int, vector<int>, greater<int> > q;  // Ð¡¸ù¶Ñ 
+	q.push(1); q.push(2); cout << q.top() << endl;  // 1
 }
 
 void testDeque() {
