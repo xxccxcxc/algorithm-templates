@@ -44,7 +44,7 @@ int main() {  // 差分约束：add(u, v, w)意义为dis[v] - dis[u] <= w(u, v)
 			if (opt == 1) add(u, v, -w);  // dis[u] - dis[v] >= w 转成 dis[v] - dis[u] <= -w 
 			else add(v, u, w);  // dis[u] - dis[v] <= w
 		}
-		else add(u, v, 0), add(v, u, 0);  // dis[u] - dis[v] <= 0 && dis[v] = dis[u] <= 0
+		else add(u, v, 0), add(v, u, 0);  // dis[u] - dis[v] <= 0 && dis[v] - dis[u] <= 0
 	}
 	for (int i = 1; i <= n; i++) add(0, i, 0);  // 添加虚拟起点0，方便dfs，没什么实际意义 
 	memset(dis, 0x3f, sizeof(dis)); dis[0] = 0;
