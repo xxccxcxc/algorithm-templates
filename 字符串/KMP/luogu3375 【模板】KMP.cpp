@@ -4,35 +4,36 @@
 #include <cstdio>
 #include <cstring>
 using namespace std;
-const int N = 1000050, M = 1000000;
-int nxt[M];
+const int L = 1e6+50;
+char r1[L], r2[L];
+int nxt[L];
 
-void getNxt(const string &p) {
-	nxt[0] = 0;
-	for (int lp = p.size(), i = 1, j = 0; i < lp; i++) {  // i要从1开始，否则nxt[0]=1 
-		while (j && p[j] != p[i]) j = nxt[j-1];
-		if (p[j] == p[i]) ++j;
-		nxt[i] = j;
-	}
+void GetNxt(char *p) {
+    int lp = strlen(p + 1);
+    nxt[1] = 0;
+    for (int i = 2, j = 0; i <= lp; i++) {
+        while (j && p[j+1] != p[i]) j = nxt[j];
+        if (p[j+1] == p[i]) j++;
+        nxt[i] = j;
+    }
 }
 
-void kmp(const string &s, const string &p) {
-	getNxt(p);
-	for (int ls = s.size(), lp = p.size(), i = 0, j = 0; i < ls; i++) {
-		// i是当前要匹配的位置，j是模式串失配位置 
-		while (j && p[j] != s[i]) j = nxt[j-1];
-		if (p[j] == s[i]) ++j;
-		if (j == lp) { cout << i - lp + 2 << endl; j = nxt[j-1]; }
-	}
-	for (int lp = p.size(), i = 0; i < lp; i++)
-		cout << nxt[i] << ' ';
-	cout << endl;
+void Kmp(char *s, char *p) {
+    GetNxt(p);
+    int ls = strlen(s + 1), lp = strlen(p + 1);
+    for (int i = 1, j = 0; i <= ls; i++) {
+        while (j && p[j+1] != s[i]) j = nxt[j];
+        if (p[j+1] == s[i]) j++;
+        if (j == lp) printf("%d\n", i - lp + 1);
+    }
+    for (int i = 1; i <= lp; i++)
+        printf("%d ", nxt[i]);
+    putchar('\n');
 }
 
 int main() {
-	string s, p;
-	cin >> s >> p;
-	kmp(s, p); 
-	return 0;
+    scanf("%s%s", r1 + 1, r2 + 1);
+    Kmp(r1, r2);
+    return 0;
 }
 
