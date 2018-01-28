@@ -20,7 +20,7 @@ void GetSA() {  // 求sa,rk,height数组
     for (int k = 1; ; k <<= 1) {  // k表示当前要排序的串长度/2 
         int cnt = 0;
         
-        // y中存储待排序二元组的第一关键字的位置 
+        // tmp中存储待排序二元组的第一关键字的位置 
         // 后k个串没有第二关键字，优先级最高，先放进来 
         for (int i = n - k + 1; i <= n; i++) tmp[++cnt] = i;  
         
@@ -61,5 +61,4 @@ int main() {
     putchar('\n');
     return 0;
 }
-
 
