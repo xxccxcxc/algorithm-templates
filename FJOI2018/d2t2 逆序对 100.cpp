@@ -17,7 +17,7 @@ f(i,j)为长度为i的序列，逆序对数目不大于j的方案数
 每个区间有哪几个数，方案数都为C(n,len)，合起来为C(n,len)^2 
 区间几个数的大小关系有f(len,m)种
 再考虑剩余区间，两个区间中每个数都可以任意取，方案数为((n-len)!)^2
-ans=(n-len+1)*f(len,m)*(C(n,len)*(n-len)!)^2
+ans(len)=(n-len+1)*f(len,m)*(C(n,len)*(n-len)!)^2
    =(n-len+1)*f(len,m)*(n!/len!)^2
 */
 #include <bits/stdc++.h>
@@ -62,7 +62,7 @@ int main() {
 	for (int n, m; T--; ) {
 		cin >> n >> m;
 		int ans = 0;
-		for (int len = 1; len <= n; len++) {
+		for (int len = 1; len <= n; len++) {  // 枚举区间长度len 
 			int k = min(m, len*(len-1)/2);  // m最多只要到逆序对总数 
 			int tmp = 1LL * fac[n] * inv[len] % MOD;
 			ans = (ans + 1LL * (n-len+1) * f[len][k] % MOD * tmp % MOD * tmp % MOD) % MOD;

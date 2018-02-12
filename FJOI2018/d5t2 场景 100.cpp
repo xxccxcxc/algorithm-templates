@@ -83,11 +83,8 @@ void Dfs(int s) {  // 直接dfs数据大会爆栈，先用栈处理出dfs序，然后dfs序倒序处理
     while (!st.empty()) {  // 求dfs序 
         int u = st.top(); st.pop();
         dfn[++dfsCnt] = u;
-        for (int siz = e[u].size(), i = 0; i < siz; i++) {
-            int v = e[u][i];
-            fa[v] = u;
-            st.push(v);
-        }
+        for (int siz = e[u].size(), i = 0; i < siz; i++)
+            st.push(e[u][i]);
     }
     for (int i = dfsCnt; i >= 1; i--) {  // dfs序倒序处理 
         int u = dfn[i], siz = e[u].size();
@@ -113,6 +110,7 @@ int main() {
     for (int u, v, i = 1; i < n; i++) {
         cin >> u >> v;
         e[u].push_back(v);
+        fa[v] = u; 
     }
     Dfs(1);
     seg.Build(1, 1, leafCnt);

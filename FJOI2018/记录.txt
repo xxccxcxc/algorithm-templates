@@ -12,4 +12,4 @@ U19961 string   循环串   100
 U19964 slot     老虎机   100
 U20011 exclaim  同余     100
 U20012 game     场景     100
-U20013 tour     环       
+U20013 tour     环       100
