@@ -157,20 +157,23 @@ struct Lct {
 
 
 int main() {
+	using std::cin;
+	using std::cout;
+	using std::endl;
     std::ios::sync_with_stdio(false);
     int n, m;
-    std::cin >> n >> m;
+    cin >> n >> m;
     static int r[N];
     for (int i = 1; i <= n; i++)
-        std::cin >> r[i];
+        cin >> r[i];
     lct.init(n, r);
     for (int opt, x, y; m--; ) {
-        std::cin >> opt >> x >> y;
+        cin >> opt >> x >> y;
         switch (opt) {
-            case 0: std::cout << lct.query(x, y) << std::endl; break;  // 询问x到y路径异或和 
-            case 1: lct.link(x, y);                            break;  // 连接x和y 
-            case 2: lct.cut(x, y);                             break;  // 删除边(x,y) 
-            case 3: lct.change(x, y);                          break;  // 将点x上的权值改成y 
+            case 0: cout << lct.query(x, y) << endl; break;  // 询问x到y路径异或和 
+            case 1: lct.link(x, y);                  break;  // 连接x和y 
+            case 2: lct.cut(x, y);                   break;  // 删除边(x,y) 
+            case 3: lct.change(x, y);                break;  // 将点x上的权值改成y 
         }
     }
     return 0;
