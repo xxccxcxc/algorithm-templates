@@ -1,6 +1,6 @@
 #include <bits/stdc++.h>
 
-const int N = 1e5+50;
+const int N = 3e5+50;
 
 struct Lct {
     struct Node {
@@ -76,7 +76,7 @@ struct Lct {
     
     void access(int x) {
     	// 把x到原树根的路径单独拉成一棵splay 
-        for (int pre = 0; x; pre = x, x = tr[x].fa) {
+        for (int pre = 0, cur = x; cur; pre = cur, cur = tr[cur].fa) {
         	/*
             这里要做的是把x的实儿子置为pre 
             首先把x节点splay到根
@@ -85,10 +85,11 @@ struct Lct {
             但原来实儿子的fa还是x，所以到原来实儿子的边变成了虚边 
             改完记得update更新信息 
             */
-            splay(x); 
-            tr[x].ch[1] = pre;
-            update(x);
+            splay(cur);
+            tr[cur].ch[1] = pre;
+            update(cur);
         }
+        splay(x);  // 保证树的深度 
     }
     
     void makeRoot(int x) {
@@ -98,7 +99,6 @@ struct Lct {
         先access提出根到x的splay，然后把这棵树反序 
         */ 
     	access(x); 
-    	splay(x);
     	PutRev(x);
     }
     
@@ -109,7 +109,6 @@ struct Lct {
         先access把树拉出来，splay一下保证复杂度，然后向左走找最小 
         */ 
     	access(x);
-    	splay(x);
     	while (tr[x].ch[0]) {
     		PushDown(x);
             x = tr[x].ch[0];	
@@ -150,27 +149,21 @@ struct Lct {
     	// 先把x提到原树根，然后把y到根的路径提出来，在这棵splay上查询 
         makeRoot(x);
         access(y);
-        splay(y);
         return tr[y].sum;
     }
 } lct;
 
-
 int main() {
-	using std::cin;
-	using std::cout;
-	using std::endl;
-    std::ios::sync_with_stdio(false);
     int n, m;
-    cin >> n >> m;
+    scanf("%d%d", &n, &m); 
     static int r[N];
     for (int i = 1; i <= n; i++)
-        cin >> r[i];
+    	scanf("%d", &r[i]);
     lct.init(n, r);
     for (int opt, x, y; m--; ) {
-        cin >> opt >> x >> y;
+    	scanf("%d%d%d", &opt, &x, &y);
         switch (opt) {
-            case 0: cout << lct.query(x, y) << endl; break;  // 询问x到y路径异或和 
+            case 0: printf("%d\n", lct.query(x, y)); break;  // 询问x到y路径异或和 
             case 1: lct.link(x, y);                  break;  // 连接x和y 
             case 2: lct.cut(x, y);                   break;  // 删除边(x,y) 
             case 3: lct.change(x, y);                break;  // 将点x上的权值改成y 
