@@ -20,25 +20,14 @@ struct SPLAY {
             sameLazy = revLazy = false;
         }
     } tr[N];
-<<<<<<< HEAD
-    int top, root;
-=======
     int top, root, head, tail;
->>>>>>> 8827cbb4f73c7960ec579f6f83193f20c05aa779
     stack<int> pool;
     
     SPLAY() {
         top = 1; tr[0].mx = tr[0].mxL = tr[0].mxR = -INF;
-<<<<<<< HEAD
-        int head = NewNode(-INF), tail = NewNode(-INF);
-        tr[head].sum = tr[tail].sum = 0;
-        Connect(0, 0, head); Connect(head, 1, tail); root = head;
-=======
-        head = NewNode(-INF), tail = NewNode(-INF);
-        tr[head].sum = tr[tail].sum = 0;
+        head = NewNode(0), tail = NewNode(0);
         Connect(0, 0, head); Connect(head, 1, tail);
         Update(root = head);
->>>>>>> 8827cbb4f73c7960ec579f6f83193f20c05aa779
     }
     
     int NewNode(int num) {
@@ -60,10 +49,6 @@ struct SPLAY {
     bool Getlr(int x) { return tr[tr[x].fa].ch[1] == x; }
     
     void Update(int x) {
-<<<<<<< HEAD
-        if (!x) return;
-=======
->>>>>>> 8827cbb4f73c7960ec579f6f83193f20c05aa779
         int lc = tr[x].ch[0], rc = tr[x].ch[1];
         tr[x].siz = tr[lc].siz + tr[rc].siz + 1;
         tr[x].sum = tr[lc].sum + tr[rc].sum + tr[x].num;
@@ -97,10 +82,6 @@ struct SPLAY {
     }
     
     void PushDown(int x) {
-<<<<<<< HEAD
-        if (!x) return;
-=======
->>>>>>> 8827cbb4f73c7960ec579f6f83193f20c05aa779
         if (tr[x].sameLazy) {
             PutSame(tr[x].ch[0], tr[x].num);
             PutSame(tr[x].ch[1], tr[x].num);
@@ -127,21 +108,12 @@ struct SPLAY {
             if (tr[y].fa != tofa)
                 Rotate(Getlr(x) ^ Getlr(y) ? x : y);
         Update(x);
-<<<<<<< HEAD
-		if (!tofa) root = x;
-    }
-    
-    void Kth(int x, int k) {
-        PushDown(x);
-        int tofa = tr[x].fa;
-=======
         if (!tofa) root = x;
     }
     
     void Kth(int x, int k) {
         int tofa = tr[x].fa;
         PushDown(x);
->>>>>>> 8827cbb4f73c7960ec579f6f83193f20c05aa779
         for (int lSiz; k != (lSiz = tr[tr[x].ch[0]].siz) + 1; PushDown(x))
             if (k <= lSiz) x = tr[x].ch[0];
             else k -= lSiz + 1, x = tr[x].ch[1];
@@ -179,13 +151,8 @@ struct SPLAY {
     }
     
     int GetSum(int pos, int tot) {
-<<<<<<< HEAD
-		return tr[Split(pos, tot)].sum;
-	}
-=======
         return tr[Split(pos, tot)].sum;
     }
->>>>>>> 8827cbb4f73c7960ec579f6f83193f20c05aa779
     
     int MaxSum() {
         int x = Split(1, tr[root].siz - 2);
